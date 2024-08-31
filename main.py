@@ -99,6 +99,20 @@ def move_right(puzzle):
     return puzzle
 
 
+def scramble_state(puzzle, n):
+    for _ in range(n):
+        move = random.randint(0, 3)
+        if move == 0:
+            puzzle = move_up(puzzle)
+        elif move == 1:
+            puzzle = move_down(puzzle)
+        elif move == 2:
+            puzzle = move_left(puzzle)
+        elif move == 3:
+            puzzle = move_right(puzzle)
+    return puzzle
+
+
 if __name__ == "__main__":
     # Check for command line arguments, if file given, will execute commands from file
     if len(sys.argv) == 1:
