@@ -1,6 +1,6 @@
 import random
 import sys
-
+random.seed(0)
 
 def startup():
     puzzle = []
@@ -24,7 +24,7 @@ def set_state(input):
     fail = False
     puzzle = []
     nums = input.split()
-    if len(nums) == 10:
+    if len(nums) == 9:
         for n in nums:
             if n.isdigit():
                 puzzle.append(int(n))
@@ -47,8 +47,6 @@ def random_puzzle() -> list:
         num = random.choice(possible)
         puzzle.append(num)
         possible.remove(num) 
-    print("Using Random Puzzle: ")
-    print_puzzle(puzzle)
     return puzzle
 
 
@@ -113,22 +111,88 @@ def scramble_state(puzzle, n):
     return puzzle
 
 
+def execute_command(command, puzzle):
+    if command == "":
+        print("Thanks for playing!")
+    elif command.startswith("setState"):
+        puzzle = set_state(str(command)[8:])
+        print("New Puzzle State:")
+        print_puzzle(puzzle)
+    elif command == "printState":
+        print("Current Puzzle State:")
+        print_puzzle(puzzle)
+    elif command.startswith("move"):
+        flag = True
+        if command == "move up":
+            puzzle = move_up(puzzle)
+            print("Moving Up...")
+        elif command == "move down":
+            puzzle = move_down(puzzle)
+            print("Moving Down...")
+        elif command == "move left":
+            puzzle = move_left(puzzle)
+            print("Moving Left...")
+        elif command == "move right":
+            puzzle = move_right(puzzle)
+            print("Moving Right...")
+        else:
+            print(f"Error: Invalid Move: {command}")
+            flag = False
+        if flag:
+            print("New Puzzle State:")
+            print_puzzle(puzzle)
+    elif command.startswith("scrambleState"):
+        try:
+            n = int(str(command)[14:])
+            puzzle = scramble_state(puzzle, n)
+            print("Scrambling...")
+            print("New Puzzle State:")
+            print_puzzle(puzzle)
+        except ValueError:
+            print(f"Error: Invalid Scramble Value, please enter \"scrambleValue n\" where n is an integer: {command}")
+    elif command.startswith("#") or command.startswith("//"):
+        pass
+    else:
+        print(f"Error: Invalid Command {command}")
+    print()
+
+
 if __name__ == "__main__":
     # Check for command line arguments, if file given, will execute commands from file
     if len(sys.argv) == 1:
         puzzle = startup()
         print("Starting Puzzle:")
         print_puzzle(puzzle)
-        print("Enter a command to move the blank space: (u)p, (d)own, (l)eft, (r)ight")
-        command = input()
-        if command == "u":
-            puzzle = move_up(puzzle)
-        elif command == "d":
-            puzzle = move_down(puzzle)
-        print_puzzle(puzzle)
+        print()
+        flag = True
+        while flag:
+            print("Enter a command or hit enter to exit")
+            command = input()
+            execute_command(command, puzzle)
+                
     elif len(sys.argv) == 2:
+        
+        print(sys.argv[1])
+        filename = sys.argv[1]
+        if not filename.endswith(".txt"):
+            print("Error: Please provide a .txt file.")
+            sys.exit(1)
+        puzzle = random_puzzle()
+        print("Random Starting Puzzle:")
+        print_puzzle(puzzle)
+        print(f"Reading commands from file: {filename}")
         print("Executing Commands:\n")
-        # print_puzzle(sys.argv[1])
-    else:
-        print("Invalid input")
-        sys.exit(1)
+        try:
+            with open(filename, 'r') as file:
+                commands = file.readlines()
+            
+            for command in commands:
+                execute_command(command, puzzle)
+        
+        except FileNotFoundError:
+            print(f"File {filename} not found.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+        else:
+            print("Invalid input")
+            sys.exit(1)
