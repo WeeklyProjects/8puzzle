@@ -55,7 +55,7 @@ def check_valid_puzzle(puzzle):
     if len(puzzle) != 9:
         return False
     for p in puzzle:
-        if p < 0 or p > 9:
+        if p < 0 or p > 8:
             return False
         if p not in possible:
             possible.append(p)
@@ -115,7 +115,9 @@ def execute_command(command, puzzle):
     if command == "":
         print("Thanks for playing!")
     elif command.startswith("setState"):
-        puzzle = set_state(str(command)[8:])
+        temp = set_state(str(command)[8:])
+        if len(temp) != 0:
+            puzzle = temp
         print("New Puzzle State:")
         print_puzzle(puzzle)
     elif command == "printState":
@@ -187,12 +189,10 @@ if __name__ == "__main__":
                 commands = file.readlines()
             
             for command in commands:
-                execute_command(command, puzzle)
+                execute_command(command.strip(), puzzle)
         
         except FileNotFoundError:
             print(f"File {filename} not found.")
-        except Exception as e:
-            print(f"An error occurred: {e}")
-        else:
-            print("Invalid input")
-            sys.exit(1)
+    else:
+        print("Invalid input")
+        sys.exit(1)
