@@ -1,6 +1,12 @@
+"""
+Written By Henry Odza
+CaseID: hwo2
+"""
+
 import random
 import sys
 random.seed(0)
+
 
 def startup():
     puzzle = []
