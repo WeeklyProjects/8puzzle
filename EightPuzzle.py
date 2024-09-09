@@ -8,6 +8,44 @@ import sys
 random.seed(0)
 
 
+class Puzzle():
+    def __init__(self, puzzle):
+        self.puzzle = puzzle
+
+    def move_up(self):
+        index0 = self.puzzle.index(0)
+        if index0 > 2:
+            self.puzzle[index0], self.puzzle[index0 - 3] = self.puzzle[index0 - 3], self.puzzle[index0]
+        
+    def move_down(self):
+        index0 = self.puzzle.index(0)
+        if index0 < 6:
+            self.puzzle[index0], self.puzzle[index0 + 3] = self.puzzle[index0 + 3], self.puzzle[index0]
+
+    def move_left(self):
+        index0 = self.puzzle.index(0)
+        if index0 % 3 != 0:
+            self.puzzle[index0], self.puzzle[index0 - 1] = self.puzzle[index0 - 1], self.puzzle[index0]
+        
+    def move_right(self):
+        index0 = self.puzzle.index(0)
+        if index0 % 3 != 2:
+            self.puzzle[index0], self.puzzle[index0 + 1] = self.puzzle[index0 + 1], self.puzzle[index0]
+
+    def scramble_state(self, n):
+        self.puzzle = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        for _ in range(n):
+            move = random.randint(0, 3)
+            if move == 0:
+                self.move_up()
+            elif move == 1:
+                self.move_down()
+            elif move == 2:
+                self.move_left()
+            elif move == 3:
+                self.move_right()
+
+    
 def startup():
     puzzle = []
     print("Welcome to the 8-puzzle solver.")
@@ -75,46 +113,6 @@ def print_puzzle(puzzle):
     print(f"{puzzle[0]} {puzzle[1]} {puzzle[2]}\n{puzzle[3]} {puzzle[4]} {puzzle[5]}\n{puzzle[6]} {puzzle[7]} {puzzle[8]}")
 
 
-def move_up(puzzle):
-    index0 = puzzle.index(0)
-    if index0 > 2:
-        puzzle[index0], puzzle[index0 - 3] = puzzle[index0 - 3], puzzle[index0]
-    return puzzle
-
-
-def move_down(puzzle):
-    index0 = puzzle.index(0)
-    if index0 < 6:
-        puzzle[index0], puzzle[index0 + 3] = puzzle[index0 + 3], puzzle[index0]
-    return puzzle
-
-
-def move_left(puzzle):
-    index0 = puzzle.index(0)
-    if index0 % 3 != 0:
-        puzzle[index0], puzzle[index0 - 1] = puzzle[index0 - 1], puzzle[index0]
-    return puzzle
-
-
-def move_right(puzzle):
-    index0 = puzzle.index(0)
-    if index0 % 3 != 2:
-        puzzle[index0], puzzle[index0 + 1] = puzzle[index0 + 1], puzzle[index0]
-    return puzzle
-
-
-def scramble_state(puzzle, n):
-    for _ in range(n):
-        move = random.randint(0, 3)
-        if move == 0:
-            puzzle = move_up(puzzle)
-        elif move == 1:
-            puzzle = move_down(puzzle)
-        elif move == 2:
-            puzzle = move_left(puzzle)
-        elif move == 3:
-            puzzle = move_right(puzzle)
-    return puzzle
 
 
 def execute_command(command, puzzle):
@@ -163,6 +161,54 @@ def execute_command(command, puzzle):
     else:
         print(f"Error: Invalid Command {command}")
     print()
+
+
+def check_movable(puzzle):
+    # Binary representation of possible moves, udlr, 1 is possible, 0 is not
+    index0 = puzzle.index(0)
+    if index0 == 0:
+        return [0, 1, 0, 1]
+    elif index0 == 1:
+        return [0, 1, 1, 1]
+    elif index0 == 2:
+        return [0, 1, 1, 0]
+    elif index0 == 3:
+        return [1, 1, 0, 1]
+    elif index0 == 4:
+        return [1, 1, 1, 1]
+    elif index0 == 5:
+        return [1, 1, 1, 0]
+    elif index0 == 6:
+        return [1, 0, 0, 1]
+    elif index0 == 7:
+        return [1, 0, 1, 1]
+    elif index0 == 8:
+        return [1, 0, 1, 0]
+
+
+def check_goal(puzzle):
+    goal = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    return puzzle == goal
+
+
+def DFS(puzzle, maxnodes):
+    pass
+
+
+def BFS(puzzle, maxnodes):
+    visited = 0
+    if check_goal(puzzle):
+        return puzzle
+    queue = [[puzzle,""]]
+    while len(queue) > 0:
+        current, pred = queue.pop(0)[0], queue.pop(0)[1]
+        if check_goal(current):
+            return current
+        if visited < maxnodes:
+
+            queue.extend([[move_left(current), pred+"l"], [move_right(current), pred+"r"], [move_up(current), pred+"u"], [move_down(current), pred+"d"]])
+            visited += 4
+    
 
 
 if __name__ == "__main__":
