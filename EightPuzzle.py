@@ -158,18 +158,42 @@ class Puzzle():
                 queue.append([new_puzzle, prev_moves + "d"])
                 nodes += 1
         return -1
-        # visited = 0
-        # if self.check_goal():
-        #     return puzzle
-        # queue = [[puzzle,""]]
-        # while len(queue) > 0:
-        #     current, pred = queue.pop(0)[0], queue.pop(0)[1]
-        #     if check_goal(current):
-        #         return current
-        #     if visited < maxnodes:
+    
+    def DFS(self, maxnodes):
+        nodes = 1
+        stack = [[self, ""]]
+        while len(stack) > 0 and nodes <= maxnodes:
+            current, prev_moves = stack.pop()
+            print(f"Current: {current.list_form()}, prev_moves: {prev_moves}")
+            if current.check_goal():
+                return [nodes, len(prev_moves), prev_moves]
+            move = current.check_moveable()
 
-        #         queue.extend([[move_left(current), pred+"l"], [move_right(current), pred+"r"], [move_up(current), pred+"u"], [move_down(current), pred+"d"]])
-        #         visited += 4
+            if 1 in move:
+                new_puzzle = Puzzle(current.list_form())
+                new_puzzle.move_down()
+                stack.append([new_puzzle, prev_moves + "d"])
+                nodes += 1
+
+            if 0 in move:
+                new_puzzle = Puzzle(current.list_form())
+                new_puzzle.move_up()
+                stack.append([new_puzzle, prev_moves + "u"])
+                nodes += 1
+            
+            if 3 in move:
+                new_puzzle = Puzzle(current.list_form())
+                new_puzzle.move_right()
+                stack.append([new_puzzle, prev_moves + "r"])
+                nodes += 1
+
+            if 2 in move:
+                new_puzzle = Puzzle(current.list_form())
+                new_puzzle.move_left()
+                stack.append([new_puzzle, prev_moves + "l"])
+                nodes += 1
+            
+        return -1
 
     def execute_command(self, command):
         if command == "":
@@ -238,6 +262,29 @@ class Puzzle():
                             print("Move Left")
                         elif move == "r":
                             print("Move Right")
+            elif command[6:].startswith("DFS"):
+                maxnodes = 1000
+                try:
+                    maxnodes = int(command[10:])
+                except ValueError:
+                    pass
+                print("Solving using DFS...")
+                result = self.DFS(maxnodes)
+                if result == -1:
+                    print(f"Error: Max Nodes limit({maxnodes}) Reached")
+                else:
+                    print(f"Nodes expanded: {result[0]}")
+                    print(f"Solution Length: {result[1]}")
+                    print("Move Sequence:")
+                    for move in result[2]:
+                        if move == "u":
+                            print("Move Up")
+                        elif move == "d":
+                            print("Move Down")
+                        elif move == "l":
+                            print("Move Left")
+                        elif move == "r":
+                            print("Move Right")
         else:
             print(f"Error: Invalid Command {command}")
         print()
@@ -252,38 +299,6 @@ def random_puzzle() -> list:
         puzzle += str(num) + " "
         possible.remove(num) 
     return puzzle
-
-
-def check_movable(puzzle):
-    # Binary representation of possible moves, udlr, 1 is possible, 0 is not
-    index0 = puzzle.index(0)
-    if index0 == 0:
-        return [0, 1, 0, 1]
-    elif index0 == 1:
-        return [0, 1, 1, 1]
-    elif index0 == 2:
-        return [0, 1, 1, 0]
-    elif index0 == 3:
-        return [1, 1, 0, 1]
-    elif index0 == 4:
-        return [1, 1, 1, 1]
-    elif index0 == 5:
-        return [1, 1, 1, 0]
-    elif index0 == 6:
-        return [1, 0, 0, 1]
-    elif index0 == 7:
-        return [1, 0, 1, 1]
-    elif index0 == 8:
-        return [1, 0, 1, 0]
-
-
-def check_goal(puzzle):
-    goal = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-    return puzzle == goal
-
-
-def DFS(puzzle, maxnodes):
-    pass
 
 
 
