@@ -342,18 +342,20 @@ if __name__ == "__main__":
         print("Random Starting Puzzle:")
         puzzle.print_puzzle()
         print(f"Reading commands from file: {filename}")
-        print("Command output can be found in output.txt")
         try:
             with open(filename, 'r') as file:
                 commands = file.readlines()
             with open("output.txt", 'w') as file:
-                sys.stdout = file
                 for command in commands:
                     command = command.strip()
                     print(f"Using Command: {command}")
                     puzzle.execute_command(command)
+                    sys.stdout = file
+                    print(f"Using Command: {command}")
+                    puzzle.execute_command(command)
+                    sys.stdout = sys.__stdout__
         
-                sys.stdout = sys.__stdout__
+            print("Command output can be found in output.txt")
         except FileNotFoundError:
             print(f"File {filename} not found.")
     else:

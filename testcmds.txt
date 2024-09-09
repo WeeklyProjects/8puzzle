@@ -21,16 +21,46 @@ setState 0 0 1 2 3 4 5 6 7
 setState 0 0 1 2 3 4 5 6 7 8
 //
 //
+// -------------------------------------------------------------------------------------------------------------------------------------------
+//
 //
 // Begin HW2 Tests
+// Sets puzzle to a solvable state
 scrambleState 8
+//
+//
+// Tests the functionality of BFS
 solve BFS
+//
+//
+// Shows what happens when it hits maxnodes and tests to see if maxnodes is passed in
 solve BFS 2
+//
+//
+// Shows what happens when an invalid number is passed for maxnodes
 solve BFS DFS
-solve 
+//
+//
+// Shows what happens when only solve with no algorithm is passed
+solve
+//
+//
+// Shows what happens when fake algorithm is passed
 solve ABC
+//
+//
+// Tests functionality of DFS with a state it can't solve
 solve DFS
+//
+//
+// Tests to see if maxnodes is passed in
 solve DFS 10000
+//
+//
+// Sets solvable state for current DFS algorithm and runs DFS
 setState 1 0 2 3 4 5 6 7 8
 solve DFS
+//
+//
+// Tests bad input for maxnodes
 solve DFS BFS

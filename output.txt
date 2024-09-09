@@ -18,43 +18,43 @@ Using Command: move down
 Moving Down...
 New Puzzle State:
 3 1 2
-0 4 5
-6 7 8
+6 4 5
+0 7 8
 
 Using Command: move right
 Moving Right...
 New Puzzle State:
 3 1 2
-4 0 5
-6 7 8
+6 4 5
+7 8 0
 
 Using Command: move down
 Moving Down...
 New Puzzle State:
 3 1 2
-4 7 5
-6 0 8
+6 4 5
+7 8 0
 
 Using Command: move left
 Moving Left...
 New Puzzle State:
 3 1 2
-4 7 5
-0 6 8
+6 4 5
+0 7 8
 
 Using Command: move up
 Moving Up...
 New Puzzle State:
-3 1 2
-0 7 5
-4 6 8
+0 1 2
+3 4 5
+6 7 8
 
 Using Command: move right
 Moving Right...
 New Puzzle State:
-3 1 2
-7 0 5
-4 6 8
+1 2 0
+3 4 5
+6 7 8
 
 Using Command: move pizza
 Error: Invalid Move: move pizza
@@ -67,18 +67,18 @@ Scrambling...
 0 1 2
 3 4 5
 6 7 8
-Moving Down...
-Moving Up...
 Moving Right...
+Moving Down...
 Moving Left...
 Moving Down...
-Moving Up...
 Moving Right...
-Moving Down...
+Moving Left...
+Moving Right...
+Moving Left...
 New Puzzle State:
 1 4 2
-3 0 5
-6 7 8
+6 3 5
+0 7 8
 
 Using Command: # This is a comment
 Comment: # This is a comment
@@ -113,11 +113,20 @@ Comment: //
 Using Command: //
 Comment: //
 
+Using Command: // -------------------------------------------------------------------------------------------------------------------------------------------
+Comment: // -------------------------------------------------------------------------------------------------------------------------------------------
+
+Using Command: //
+Comment: //
+
 Using Command: //
 Comment: //
 
 Using Command: // Begin HW2 Tests
 Comment: // Begin HW2 Tests
+
+Using Command: // Sets puzzle to a solvable state
+Comment: // Sets puzzle to a solvable state
 
 Using Command: scrambleState 8
 Scrambling...
@@ -125,56 +134,124 @@ Scrambling...
 3 4 5
 6 7 8
 Moving Right...
-Moving Down...
-Moving Left...
-Moving Down...
 Moving Right...
 Moving Left...
-Moving Right...
-Moving Left...
+Moving Down...
+Moving Up...
+Moving Down...
+Moving Down...
+Moving Up...
 New Puzzle State:
 1 4 2
-6 3 5
-0 7 8
+3 0 5
+6 7 8
+
+Using Command: //
+Comment: //
+
+Using Command: //
+Comment: //
+
+Using Command: // Tests the functionality of BFS
+Comment: // Tests the functionality of BFS
 
 Using Command: solve BFS
 Solving using BFS...
-Nodes expanded: 149
-Solution Length: 4
+Nodes expanded: 33
+Solution Length: 2
 Move Sequence:
 Move Up
-Move Right
-Move Up
 Move Left
+
+Using Command: //
+Comment: //
+
+Using Command: //
+Comment: //
+
+Using Command: // Shows what happens when it hits maxnodes and tests to see if maxnodes is passed in
+Comment: // Shows what happens when it hits maxnodes and tests to see if maxnodes is passed in
 
 Using Command: solve BFS 2
 Solving using BFS...
 Error: Max Nodes limit(2) Reached
 
+Using Command: //
+Comment: //
+
+Using Command: //
+Comment: //
+
+Using Command: // Shows what happens when an invalid number is passed for maxnodes
+Comment: // Shows what happens when an invalid number is passed for maxnodes
+
 Using Command: solve BFS DFS
 Error: Invalid Max Nodes Value. Using Default Value of 1000
 Solving using BFS...
-Nodes expanded: 149
-Solution Length: 4
+Nodes expanded: 33
+Solution Length: 2
 Move Sequence:
 Move Up
-Move Right
-Move Up
 Move Left
+
+Using Command: //
+Comment: //
+
+Using Command: //
+Comment: //
+
+Using Command: // Shows what happens when only solve with no algorithm is passed
+Comment: // Shows what happens when only solve with no algorithm is passed
 
 Using Command: solve
 Error: Invalid Solve Command: solve
 
+Using Command: //
+Comment: //
+
+Using Command: //
+Comment: //
+
+Using Command: // Shows what happens when fake algorithm is passed
+Comment: // Shows what happens when fake algorithm is passed
+
 Using Command: solve ABC
 Error: Invalid Solve Command: solve ABC
+
+Using Command: //
+Comment: //
+
+Using Command: //
+Comment: //
+
+Using Command: // Tests functionality of DFS with a state it can't solve
+Comment: // Tests functionality of DFS with a state it can't solve
 
 Using Command: solve DFS
 Solving using DFS...
 Error: Max Nodes limit(1000) Reached
 
+Using Command: //
+Comment: //
+
+Using Command: //
+Comment: //
+
+Using Command: // Tests to see if maxnodes is passed in
+Comment: // Tests to see if maxnodes is passed in
+
 Using Command: solve DFS 10000
 Solving using DFS...
 Error: Max Nodes limit(10000) Reached
+
+Using Command: //
+Comment: //
+
+Using Command: //
+Comment: //
+
+Using Command: // Sets solvable state for current DFS algorithm and runs DFS
+Comment: // Sets solvable state for current DFS algorithm and runs DFS
 
 Using Command: setState 1 0 2 3 4 5 6 7 8
 Setting Puzzle State...
@@ -189,6 +266,15 @@ Nodes expanded: 4
 Solution Length: 1
 Move Sequence:
 Move Left
+
+Using Command: //
+Comment: //
+
+Using Command: //
+Comment: //
+
+Using Command: // Tests bad input for maxnodes
+Comment: // Tests bad input for maxnodes
 
 Using Command: solve DFS BFS
 Error: Invalid Max Nodes Value. Using Default Value of 1000
