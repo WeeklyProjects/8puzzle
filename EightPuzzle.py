@@ -303,9 +303,6 @@ def random_puzzle() -> list:
         puzzle += str(num) + " "
         possible.remove(num) 
     return puzzle
-
-
-
     
 
 if __name__ == "__main__":
