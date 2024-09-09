@@ -1,3 +1,4 @@
+// Begin HW1 Tests
 setState 0 1 2 3 4 5 6 7 8
 printState
 move down
@@ -18,3 +19,18 @@ scrambleState 8.2
 setState 1 2 3 4 5 6 7 8 9
 setState 0 0 1 2 3 4 5 6 7
 setState 0 0 1 2 3 4 5 6 7 8
+//
+//
+//
+// Begin HW2 Tests
+scrambleState 8
+solve BFS
+solve BFS 2
+solve BFS DFS
+solve 
+solve ABC
+solve DFS
+solve DFS 10000
+setState 1 0 2 3 4 5 6 7 8
+solve DFS
+solve DFS BFS

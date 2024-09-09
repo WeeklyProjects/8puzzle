@@ -1,0 +1,200 @@
+Using Command: // Begin HW1 Tests
+Comment: // Begin HW1 Tests
+
+Using Command: setState 0 1 2 3 4 5 6 7 8
+Setting Puzzle State...
+New Puzzle State:
+0 1 2
+3 4 5
+6 7 8
+
+Using Command: printState
+Current Puzzle State:
+0 1 2
+3 4 5
+6 7 8
+
+Using Command: move down
+Moving Down...
+New Puzzle State:
+3 1 2
+0 4 5
+6 7 8
+
+Using Command: move right
+Moving Right...
+New Puzzle State:
+3 1 2
+4 0 5
+6 7 8
+
+Using Command: move down
+Moving Down...
+New Puzzle State:
+3 1 2
+4 7 5
+6 0 8
+
+Using Command: move left
+Moving Left...
+New Puzzle State:
+3 1 2
+4 7 5
+0 6 8
+
+Using Command: move up
+Moving Up...
+New Puzzle State:
+3 1 2
+0 7 5
+4 6 8
+
+Using Command: move right
+Moving Right...
+New Puzzle State:
+3 1 2
+7 0 5
+4 6 8
+
+Using Command: move pizza
+Error: Invalid Move: move pizza
+
+Using Command: move
+Error: Invalid Move: move
+
+Using Command: scrambleState 8
+Scrambling...
+0 1 2
+3 4 5
+6 7 8
+Moving Down...
+Moving Up...
+Moving Right...
+Moving Left...
+Moving Down...
+Moving Up...
+Moving Right...
+Moving Down...
+New Puzzle State:
+1 4 2
+3 0 5
+6 7 8
+
+Using Command: # This is a comment
+Comment: # This is a comment
+
+Using Command: // This is also a comment
+Comment: // This is also a comment
+
+Using Command: This is an invalid statement
+Error: Invalid Command This is an invalid statement
+
+Using Command: setState up
+Error Invalid Puzzle State: Please enter a puzzle with 9 unique digits between 0 and 9 sperated by spaces
+
+Using Command: scrambleState down
+Error: Invalid Scramble Value, please enter "scrambleValue n" where n is an integer: scrambleState down
+
+Using Command: scrambleState 8.2
+Error: Invalid Scramble Value, please enter "scrambleValue n" where n is an integer: scrambleState 8.2
+
+Using Command: setState 1 2 3 4 5 6 7 8 9
+Error Invalid Puzzle State: Please enter a puzzle with 9 unique digits between 0 and 9 sperated by spaces
+
+Using Command: setState 0 0 1 2 3 4 5 6 7
+Error Invalid Puzzle State: Please enter a puzzle with 9 unique digits between 0 and 9 sperated by spaces
+
+Using Command: setState 0 0 1 2 3 4 5 6 7 8
+Error Invalid Puzzle State: Please enter a puzzle with 9 unique digits between 0 and 9 sperated by spaces
+
+Using Command: //
+Comment: //
+
+Using Command: //
+Comment: //
+
+Using Command: //
+Comment: //
+
+Using Command: // Begin HW2 Tests
+Comment: // Begin HW2 Tests
+
+Using Command: scrambleState 8
+Scrambling...
+0 1 2
+3 4 5
+6 7 8
+Moving Right...
+Moving Down...
+Moving Left...
+Moving Down...
+Moving Right...
+Moving Left...
+Moving Right...
+Moving Left...
+New Puzzle State:
+1 4 2
+6 3 5
+0 7 8
+
+Using Command: solve BFS
+Solving using BFS...
+Nodes expanded: 149
+Solution Length: 4
+Move Sequence:
+Move Up
+Move Right
+Move Up
+Move Left
+
+Using Command: solve BFS 2
+Solving using BFS...
+Error: Max Nodes limit(2) Reached
+
+Using Command: solve BFS DFS
+Error: Invalid Max Nodes Value. Using Default Value of 1000
+Solving using BFS...
+Nodes expanded: 149
+Solution Length: 4
+Move Sequence:
+Move Up
+Move Right
+Move Up
+Move Left
+
+Using Command: solve
+Error: Invalid Solve Command: solve
+
+Using Command: solve ABC
+Error: Invalid Solve Command: solve ABC
+
+Using Command: solve DFS
+Solving using DFS...
+Error: Max Nodes limit(1000) Reached
+
+Using Command: solve DFS 10000
+Solving using DFS...
+Error: Max Nodes limit(10000) Reached
+
+Using Command: setState 1 0 2 3 4 5 6 7 8
+Setting Puzzle State...
+New Puzzle State:
+1 0 2
+3 4 5
+6 7 8
+
+Using Command: solve DFS
+Solving using DFS...
+Nodes expanded: 4
+Solution Length: 1
+Move Sequence:
+Move Left
+
+Using Command: solve DFS BFS
+Error: Invalid Max Nodes Value. Using Default Value of 1000
+Solving using DFS...
+Nodes expanded: 4
+Solution Length: 1
+Move Sequence:
+Move Left
+

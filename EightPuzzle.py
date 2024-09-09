@@ -164,7 +164,7 @@ class Puzzle():
         stack = [[self, ""]]
         while len(stack) > 0 and nodes <= maxnodes:
             current, prev_moves = stack.pop()
-            print(f"Current: {current.list_form()}, prev_moves: {prev_moves}")
+            # print(f"Current: {current.list_form()}, prev_moves: {prev_moves}")
             if current.check_goal():
                 return [nodes, len(prev_moves), prev_moves]
             move = current.check_moveable()
@@ -230,8 +230,8 @@ class Puzzle():
         elif command.startswith("scrambleState"):
             try:
                 n = int(str(command)[14:])
-                self.scramble_state(n)
                 print("Scrambling...")
+                self.scramble_state(n)
                 print("New Puzzle State:")
                 self.print_puzzle()
             except ValueError:
@@ -244,7 +244,8 @@ class Puzzle():
                 try:
                     maxnodes = int(command[10:])
                 except ValueError:
-                    pass
+                    if len(command) > 9:
+                        print("Error: Invalid Max Nodes Value. Using Default Value of 1000")
                 print("Solving using BFS...")
                 result = self.BFS(maxnodes)
                 if result == -1:
@@ -267,7 +268,8 @@ class Puzzle():
                 try:
                     maxnodes = int(command[10:])
                 except ValueError:
-                    pass
+                    if len(command) > 9:
+                        print("Error: Invalid Max Nodes Value. Using Default Value of 1000")
                 print("Solving using DFS...")
                 result = self.DFS(maxnodes)
                 if result == -1:
@@ -285,6 +287,8 @@ class Puzzle():
                             print("Move Left")
                         elif move == "r":
                             print("Move Right")
+            else: 
+                print(f"Error: Invalid Solve Command: {command}")
         else:
             print(f"Error: Invalid Command {command}")
         print()
@@ -338,16 +342,18 @@ if __name__ == "__main__":
         print("Random Starting Puzzle:")
         puzzle.print_puzzle()
         print(f"Reading commands from file: {filename}")
-        print("Executing Commands:\n")
+        print("Command output can be found in output.txt")
         try:
             with open(filename, 'r') as file:
                 commands = file.readlines()
-            
-            for command in commands:
-                command = command.strip()
-                print(f"Using Command: {command}")
-                puzzle.execute_command(command)
+            with open("output.txt", 'w') as file:
+                sys.stdout = file
+                for command in commands:
+                    command = command.strip()
+                    print(f"Using Command: {command}")
+                    puzzle.execute_command(command)
         
+                sys.stdout = sys.__stdout__
         except FileNotFoundError:
             print(f"File {filename} not found.")
     else:
