@@ -64,3 +64,19 @@ solve DFS
 //
 // Tests bad input for maxnodes
 solve DFS BFS
+//
+//
+// -------------------------------------------------------------------------------------------------------------------------------------------
+//
+//
+// Begin HW3 Tests
+// Sets puzzle state to demonstrate that heuristics will output 0 when puzzle is solved
+setState 0 1 2 3 4 5 6 7 8
+heuristic h1
+heuristic h2
+//
+//
+// Sets puzzle state to demonstrate heuristics when they are different
+setState 1 0 5 3 2 4 6 7 8
+heuristic h1
+heuristic h2

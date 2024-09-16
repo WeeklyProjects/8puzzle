@@ -5,6 +5,7 @@ CaseID: hwo2
 
 import random
 import sys
+import heapq
 
 random.seed(10)
 
@@ -194,6 +195,67 @@ class Puzzle():
                 nodes += 1
             
         return -1
+    
+    def h1(self):
+        # Heuristic 1: Counts the number of misplaced tiles compared to the goal state.
+        # The heuristic ignores the empty tile (0).    
+        goal = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        return sum([1 for i in range(9) if self.puzzle[i] != goal[i] and self.puzzle[i] != 0])
+
+    def h2(self):
+        # Heuristic 2: Calculates the sum of the Manhattan distances of the tiles from their goal positions.
+        # The heuristic ignores the empty tile (0).
+        # This uses integer division to calculate the row, and modulo to calculate the column.
+        goal = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        return sum([abs(i // 3 - goal.index(self.puzzle[i]) // 3) + abs(i % 3 - goal.index(self.puzzle[i]) % 3) for i in range(9) if self.puzzle[i] != 0])
+    
+    def heuristic(self, h):
+        if h == 1:
+            return self.h1()
+        elif h == 2:
+            return self.h2()
+        else:
+            return -1
+
+    def A_star(self, heuristic):
+        # A* Search Algorithm using the given heuristic function.
+        # The heuristic function is passed as an argument.
+        nodes = 1
+        # if self.check_goal():
+        #     return [nodes, 0, []]
+        states = {}
+        states[self.list_form()] = 0
+        queue = []
+        heapq.heappush(queue, [self.heuristic(heuristic), self, ""])
+        while len(queue) > 0:
+            current, prev_moves, f = heapq.heappop(queue)
+            if current.check_goal():
+                return [nodes, len(prev_moves), prev_moves]
+            move = current.check_moveable()
+            if 2 in move:
+                new_puzzle = Puzzle(current.list_form())
+                new_puzzle.move_left()
+                heapq.heappush(queue, [new_puzzle, prev_moves + "l", new_puzzle.heuristic(heuristic) + len(prev_moves) + 1])
+                nodes += 1
+            
+            if 3 in move:
+                new_puzzle = Puzzle(current.list_form())
+                new_puzzle.move_right()
+                heapq.heappush(queue, [new_puzzle, prev_moves + "r", new_puzzle.heuristic(heuristic) + len(prev_moves) + 1])
+                nodes += 1
+
+            if 0 in move:
+                new_puzzle = Puzzle(current.list_form())
+                new_puzzle.move_up()
+                heapq.heappush(queue, [new_puzzle, prev_moves + "u", new_puzzle.heuristic(heuristic) + len(prev_moves) + 1])
+                nodes += 1
+            
+            if 1 in move:
+                new_puzzle = Puzzle(current.list_form())
+                new_puzzle.move_down()
+                heapq.heappush(queue, [new_puzzle, prev_moves + "d", new_puzzle.heuristic(heuristic) + len(prev_moves) + 1])
+                nodes += 1
+        return -1
 
     def execute_command(self, command):
         if command == "":
@@ -239,7 +301,25 @@ class Puzzle():
         elif command.startswith("#") or command.startswith("//"):
             print(f"Comment: {command}")
         elif command.startswith("solve"):
-            if command[6:].startswith("BFS"):
+            if command[6:] == "A-star h1":
+                print("Solving using A* with Heuristic 1...")
+                result = self.A_star(self.h1)
+                if result == -1:
+                    print("Error: No Solution Found")
+                else:
+                    print(f"Nodes expanded: {result[0]}")
+                    print(f"Solution Length: {result[1]}")
+                    print("Move Sequence:")
+                    for move in result[2]:
+                        if move == "u":
+                            print("Move Up")
+                        elif move == "d":
+                            print("Move Down")
+                        elif move == "l":
+                            print("Move Left")
+                        elif move == "r":
+                            print("Move Right")
+            elif command[6:].startswith("BFS"):
                 maxnodes = 1000
                 try:
                     maxnodes = int(command[10:])
@@ -289,6 +369,13 @@ class Puzzle():
                             print("Move Right")
             else: 
                 print(f"Error: Invalid Solve Command: {command}")
+        elif command.startswith("heuristic"):
+            if command[10:] == "h1":
+                print(f"Heuristic 1: {self.h1()}")
+            elif command[10:] == "h2":
+                print(f"Heuristic 2: {self.h2()}")
+            else:
+                print(f"Error: Invalid Heuristic Command: {command}")
         else:
             print(f"Error: Invalid Command {command}")
         print()
