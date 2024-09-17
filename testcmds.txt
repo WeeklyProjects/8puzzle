@@ -80,3 +80,30 @@ heuristic h2
 setState 1 0 5 3 2 4 6 7 8
 heuristic h1
 heuristic h2
+//
+//
+// Tests A* when it is in the goal state already
+setState 0 1 2 3 4 5 6 7 8
+solve A* h1
+solve A* h2
+//
+//
+// Tests A*
+// There are loops that would happen without repeated state checking in this example
+scrambleState 60
+solve A* h1
+solve A* h2
+//
+//
+// Shows A* when it hits max nodes
+scrambleState 1000
+solve A* h1
+solve A* h2
+//
+//
+// Tests invalid commands
+sdf
+solve
+solve A*
+solve A* sdfds
+heuristic sdfdsf

@@ -324,7 +324,7 @@ class Puzzle():
                     print("Solving using A* with Heuristic 1...")
                     result = self.A_star(1, maxnodes=maxnodes)
                     if result == -1:
-                        print("Error: No Solution Found")
+                        print(f"Error: Max Nodes limit({maxnodes}) Reached")
                     else:
                         print(f"Nodes expanded: {result[0]}")
                         print(f"Solution Length: {result[1]}")
@@ -342,7 +342,7 @@ class Puzzle():
                     print("Solving using A* with Heuristic 2...")
                     result = self.A_star(2, maxnodes=maxnodes)
                     if result == -1:
-                        print("Error: No Solution Found")
+                        print(f"Error: Max Nodes limit({maxnodes}) Reached")
                     else:
                         print(f"Nodes expanded: {result[0]}")
                         print(f"Solution Length: {result[1]}")
@@ -469,6 +469,7 @@ if __name__ == "__main__":
             with open(filename, 'r') as file:
                 commands = file.readlines()
             with open("output.txt", 'w') as file:
+                file.write("Henry Odza\n")
                 for command in commands:
                     command = command.strip()
                     print(f"Using Command: {command}")
