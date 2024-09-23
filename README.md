@@ -14,12 +14,14 @@ To run the program with commands in a txt file, type "python EightPuzzle.py <fil
 
 ## Available commands
 After choosing a random puzzle, inputing a valid starting puzzle, or after you provide a txt file, you can use several commands:
-    setState <state>        : Set the state of the of the puzzle
-    printState              : Print the current state of the puzzle
-    move up                 : Move the blank puzzle piece up
-    move down               : Move the blank puzzle piece down
-    move left               : Move the blank puzzle piece left
-    move right              : Move the blank puzzle piece right
-    scrambleState <n>       : Scrambles the state of the puzzle by making n random moves
-    solve BFS <maxnodes>    : Performs a BFS algorithm on the current puzzle state until it reaches the goal state or reaches the node limit
-    solve DFS <maxnodes>    : Performs a DFS algorithm on the current puzzle state until it reaches the goal state or reaches the node limit
+    setState <state>                : Set the state of the of the puzzle
+    printState                      : Print the current state of the puzzle
+    move up                         : Move the blank puzzle piece up
+    move down                       : Move the blank puzzle piece down
+    move left                       : Move the blank puzzle piece left
+    move right                      : Move the blank puzzle piece right
+    heurestic <heuristic>           : Returns the value of the heurestic given (h1 or h2)
+    scrambleState <n>               : Scrambles the state of the puzzle by making n random moves
+    solve BFS <maxnodes>            : Performs a BFS algorithm on the current puzzle state until it reaches the goal state or reaches the node limit
+    solve DFS <maxnodes>            : Performs a DFS algorithm on the current puzzle state until it reaches the goal state or reaches the node limit
+    solve A* <heuristic> <maxnodes> : Performs a A* algorithm on the current puzzle state with the given heuristic (h1 or h2) until it reaches the goal state or reaches the node limit

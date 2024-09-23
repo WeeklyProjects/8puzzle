@@ -160,7 +160,7 @@ class Puzzle():
                 nodes += 1
         return -1
     
-    def DFS(self, maxnodes):
+    def OldDFS(self, maxnodes):
         nodes = 1
         stack = [[self, ""]]
         while len(stack) > 0 and nodes <= maxnodes:
@@ -196,6 +196,48 @@ class Puzzle():
             
         return -1
     
+    def DFS(self, maxnodes):
+        nodes = 1
+        stack = [[self, ""]]
+        visited = set()
+        visited.add(self.list_form())
+        while len(stack) > 0 and nodes <= maxnodes:
+            current, prev_moves = stack.pop()
+            if current.check_goal():
+                return [nodes, len(prev_moves), prev_moves]
+            move = current.check_moveable()
+            if 1 in move:
+                new_puzzle = Puzzle(current.list_form())
+                new_puzzle.move_down()
+                if new_puzzle.list_form() not in visited:
+                    stack.append([new_puzzle, prev_moves + "d"])
+                    visited.add(new_puzzle.list_form())
+                    nodes += 1
+
+            if 0 in move:
+                new_puzzle = Puzzle(current.list_form())
+                new_puzzle.move_up()
+                if new_puzzle.list_form() not in visited:
+                    stack.append([new_puzzle, prev_moves + "u"])
+                    visited.add(new_puzzle.list_form())
+                    nodes += 1
+            
+            if 3 in move:
+                new_puzzle = Puzzle(current.list_form())
+                new_puzzle.move_right()
+                if new_puzzle.list_form() not in visited:
+                    stack.append([new_puzzle, prev_moves + "r"])
+                    visited.add(new_puzzle.list_form())
+                    nodes += 1
+
+            if 2 in move:
+                new_puzzle = Puzzle(current.list_form())
+                new_puzzle.move_left()
+                if new_puzzle.list_form() not in visited:
+                    stack.append([new_puzzle, prev_moves + "l"])
+                    visited.add(new_puzzle.list_form())
+                    nodes += 1
+
     def h1(self):
         # Heuristic 1: Counts the number of misplaced tiles compared to the goal state.
         # The heuristic ignores the empty tile (0).    
