@@ -42,21 +42,21 @@ class Puzzle():
 
     def scramble_state(self, n):
         self.puzzle = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-        self.print_puzzle()
+        # self.print_puzzle()
         for _ in range(n):
             move = random.choice(self.check_moveable())
 
             if move == 0:
-                print("Moving Up...")
+                # print("Moving Up...")
                 self.move_up()
             elif move == 1:
-                print("Moving Down...")
+                # print("Moving Down...")
                 self.move_down()
             elif move == 2:
-                print("Moving Left...")
+                # print("Moving Left...")
                 self.move_left()
             elif move == 3:
-                print("Moving Right...")
+                # print("Moving Right...")
                 self.move_right()
             # self.print_puzzle()
     
@@ -237,6 +237,7 @@ class Puzzle():
                     stack.append([new_puzzle, prev_moves + "l"])
                     visited.add(new_puzzle.list_form())
                     nodes += 1
+        return -1
 
     def h1(self):
         # Heuristic 1: Counts the number of misplaced tiles compared to the goal state.
@@ -310,7 +311,23 @@ class Puzzle():
                     nodes += 1
                     counter += 1
         return -1
-
+    
+    def branching_factor(self, depth, nodes, tolerance, max_iterations):
+        b = 2.0 
+        for _ in range(max_iterations):
+            estimate = (1-b**(depth+1))/(1-b) - 1 - nodes
+            # estimate = (b**(depth+1) - 1) / (b - 1) - nodes
+            # print(b, estimate)
+            if abs(estimate) < tolerance:
+                return b
+            try:
+                b -= estimate/(((depth*b-depth-1)*(b**depth)+1)/((b-1)**2))
+            except ZeroDivisionError:
+                return -1
+            # b -= estimate/(((b - 1) * (depth+1) * b**depth - (b**(depth+1) - 1)) / (b - 1)**2)
+        print("Error: Max Iterations Reached")
+        return -1
+    
     def execute_command(self, command):
         if command == "":
             return 0
@@ -457,10 +474,63 @@ class Puzzle():
                 print(f"Heuristic 2: {self.h2()}")
             else:
                 print(f"Error: Invalid Heuristic Command: {command}")
+        elif command.startswith("branchingFactor"):
+            split = command.split()
+            depth = 10
+            nodes = 100
+            tolerance = 0.01
+            max_iterations = 1000
+            try:
+                depth = int(split[1])
+                nodes = int(split[2])
+                tolerance = float(split[3])
+                max_iterations = int(split[4])
+            except ValueError:
+                if len(command) > 14:
+                    print("Error: Invalid Parameters. Using Default Values")
+            print(f"Branching Factor: {self.branching_factor(depth, nodes, tolerance, max_iterations)}")
         else:
             print(f"Error: Invalid Command {command}")
         print()
         return 1
+
+
+def branch(acceptable_d, maxnodes, tolerance, max_iterations):
+    good = []
+    for i in range(6, 500):
+        puzzle = Puzzle("0 1 2 3 4 5 6 7 8")
+        puzzle.scramble_state(i)
+        bfs = puzzle.BFS(maxnodes)
+        # dfs = puzzle.DFS(maxnodes)
+        # a1 = puzzle.A_star(1, maxnodes)
+        # a2 = puzzle.A_star(2, maxnodes)
+        if bfs != -1:
+            branch = puzzle.branching_factor(bfs[1], bfs[0], tolerance, max_iterations)
+            if branch != -1:
+                print("BFS", bfs[1], bfs[0], branch)
+                if bfs[1] in acceptable_d:
+                    print("BFS", bfs[1], bfs[0], branch)
+                    good.append(["BFS", bfs[1], bfs[0], branch])
+        # if dfs != -1:
+        #     branch = puzzle.branching_factor(dfs[1], dfs[0], tolerance, max_iterations)
+        #     if branch != -1:
+        #         if dfs[1] in acceptable_d:
+        #             print("DFS", dfs[1], dfs[0], branch)
+        #             good.append(["DFS", dfs[1], dfs[0], branch])
+        # if a1 != -1:
+        #     branch = puzzle.branching_factor(a1[1], a1[0], tolerance, max_iterations)
+        #     if branch != -1:
+        #         if a1[1] in acceptable_d:
+        #             print("A* h1", a1[1], a1[0], branch)
+        #             good.append(["a1", a1[1], a1[0], branch])
+        #             # puzzle.print_puzzle()
+        # if a2 != -1:
+        #     branch = puzzle.branching_factor(a2[1], a2[0], tolerance, max_iterations)
+        #     if branch != -1:
+        #         if a2[1] in acceptable_d:
+        #             print("A* h2", a2[1], a2[0], branch)
+        #             good.append(["a2", a2[1], a2[0], branch])
+    return good
 
 
 def random_puzzle() -> list:
@@ -491,9 +561,14 @@ if __name__ == "__main__":
         flag = True
         while flag:
             command = input("Enter a command or hit enter to exit: ")
-            state = puzzle.execute_command(command)
-            if state == 0:
-                flag = False
+            if command.startswith("branch"):
+                acceptable = [6,8,10,12,14,16,18,20,22,24,26,28]
+                branch(acceptable, 1000, 0.01, 500000)
+                pass
+            else:
+                state = puzzle.execute_command(command)
+                if state == 0:
+                    flag = False
                 
     elif len(sys.argv) == 2:
         
