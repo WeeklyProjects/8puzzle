@@ -315,7 +315,10 @@ class Puzzle():
     def branching_factor(self, depth, nodes, tolerance, max_iterations):
         b = 2.0 
         for _ in range(max_iterations):
-            estimate = (1-b**(depth+1))/(1-b) - 1 - nodes
+            try:
+                estimate = (1-b**(depth+1))/(1-b) - 1 - nodes
+            except OverflowError:
+                return -1
             if abs(estimate) < tolerance:
                 return b
             try:
@@ -498,35 +501,35 @@ def branch(acceptable_d, maxnodes, tolerance, max_iterations):
         puzzle = Puzzle("0 1 2 3 4 5 6 7 8")
         puzzle.scramble_state(i)
         bfs = puzzle.BFS(maxnodes)
-        # dfs = puzzle.DFS(maxnodes)
-        # a1 = puzzle.A_star(1, maxnodes)
-        # a2 = puzzle.A_star(2, maxnodes)
+        dfs = puzzle.DFS(maxnodes)
+        a1 = puzzle.A_star(1, maxnodes)
+        a2 = puzzle.A_star(2, maxnodes)
         if bfs != -1:
             branch = puzzle.branching_factor(bfs[1], bfs[0], tolerance, max_iterations)
             if branch != -1:
-                print("BFS", bfs[1], bfs[0], branch)
+                # print("BFS", bfs[1], bfs[0], branch)
                 if bfs[1] in acceptable_d:
                     print("BFS", bfs[1], bfs[0], branch)
                     good.append(["BFS", bfs[1], bfs[0], branch])
-        # if dfs != -1:
-        #     branch = puzzle.branching_factor(dfs[1], dfs[0], tolerance, max_iterations)
-        #     if branch != -1:
-        #         if dfs[1] in acceptable_d:
-        #             print("DFS", dfs[1], dfs[0], branch)
-        #             good.append(["DFS", dfs[1], dfs[0], branch])
-        # if a1 != -1:
-        #     branch = puzzle.branching_factor(a1[1], a1[0], tolerance, max_iterations)
-        #     if branch != -1:
-        #         if a1[1] in acceptable_d:
-        #             print("A* h1", a1[1], a1[0], branch)
-        #             good.append(["a1", a1[1], a1[0], branch])
-        #             # puzzle.print_puzzle()
-        # if a2 != -1:
-        #     branch = puzzle.branching_factor(a2[1], a2[0], tolerance, max_iterations)
-        #     if branch != -1:
-        #         if a2[1] in acceptable_d:
-        #             print("A* h2", a2[1], a2[0], branch)
-        #             good.append(["a2", a2[1], a2[0], branch])
+        if dfs != -1:
+            branch = puzzle.branching_factor(dfs[1], dfs[0], tolerance, max_iterations)
+            if branch != -1:
+                if dfs[1] in acceptable_d:
+                    print("DFS", dfs[1], dfs[0], branch)
+                    good.append(["DFS", dfs[1], dfs[0], branch])
+        if a1 != -1:
+            branch = puzzle.branching_factor(a1[1], a1[0], tolerance, max_iterations)
+            if branch != -1:
+                if a1[1] in acceptable_d:
+                    print("A* h1", a1[1], a1[0], branch)
+                    good.append(["a1", a1[1], a1[0], branch])
+                    # puzzle.print_puzzle()
+        if a2 != -1:
+            branch = puzzle.branching_factor(a2[1], a2[0], tolerance, max_iterations)
+            if branch != -1:
+                if a2[1] in acceptable_d:
+                    print("A* h2", a2[1], a2[0], branch)
+                    good.append(["a2", a2[1], a2[0], branch])
     return good
 
 
@@ -559,8 +562,8 @@ if __name__ == "__main__":
         while flag:
             command = input("Enter a command or hit enter to exit: ")
             if command.startswith("branch"):
-                acceptable = [6,8,10,12,14,16,18,20,22,24,26,28]
-                branch(acceptable, 1000, 0.01, 500000)
+                acceptable = [2,4,6,8,10,12]
+                branch(acceptable, 5000, 0.01, 10000)
                 pass
             else:
                 state = puzzle.execute_command(command)

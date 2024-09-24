@@ -25,3 +25,4 @@ After choosing a random puzzle, inputing a valid starting puzzle, or after you p
     solve BFS <maxnodes>            : Performs a BFS algorithm on the current puzzle state until it reaches the goal state or reaches the node limit
     solve DFS <maxnodes>            : Performs a DFS algorithm on the current puzzle state until it reaches the goal state or reaches the node limit
     solve A* <heuristic> <maxnodes> : Performs a A* algorithm on the current puzzle state with the given heuristic (h1 or h2) until it reaches the goal state or reaches the node limit
+    branch <acceptable> <maxnodes> <tolerance> <max-iterations> : Finds the branch factor of BFS, DFS, and A* with h1 and h2, then will return branch factors that have a depth within acceptable. 
